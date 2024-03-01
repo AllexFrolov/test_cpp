@@ -18,11 +18,31 @@ public:
         value = card_number;
     }
 
-    uint32_t operator()() {
+    uint32_t operator()() const {
         return value;
     }
 
-    string str() {
+    bool operator<(const Card& other) {
+        return value < other();
+    }
+
+    bool operator>(const Card& other) {
+        return value > other();
+    }
+
+    bool operator==(const Card& other) {
+        return value == other();
+    }
+
+    bool operator<=(const Card& other) {
+        return (*this < other()) || (*this == other());
+    }
+
+    bool operator>=(const Card& other) {
+        return !(*this < other());
+    }
+
+    const string str() const {
         return itoc.at(value);
     }
 
@@ -33,8 +53,10 @@ const std::map<uint32_t, std::string> Card::itoc = []() {
     uint32_t counter = 0;
     for(char v : "23456789TJQKA") {
         for (char s : "cdhs") {
-            result[counter] = std::string(1, v) + s;
-            ++counter;
+            if (v != '\0' and s != '\0') {
+                result[counter] = string(1, v) + s;
+                ++counter;
+            }
         }
     }
     return result;
