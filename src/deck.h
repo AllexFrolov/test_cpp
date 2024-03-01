@@ -11,52 +11,70 @@ using std::string;
 class Card {
 private:
     uint32_t value;
-    static const std::map<uint32_t, string> itoc;
+    uint32_t suit;
+    static const uint32_t values = 13;
+    static const std::map<uint32_t, string> itov;
+    static const std::map<uint32_t, string> itos;
 
 public:
-    Card(uint32_t card_number) {
-        value = card_number;
+    Card(uint32_t card_value, uint32_t card_suit) {
+        value = card_value;
+        suit = card_suit;
     }
 
-    uint32_t operator()() const {
+    Card(uint32_t card_number) {
+        value = card_number / values;
+        suit = card_number % values;
+    }
+    uint32_t get_value() const {
         return value;
     }
 
-    bool operator<(const Card& other) {
-        return value < other();
+    bool operator<(const Card& other) const {
+        return value < other.get_value();
     }
 
-    bool operator>(const Card& other) {
-        return value > other();
+    bool operator>(const Card& other) const {
+        return value > other.get_value();
     }
 
-    bool operator==(const Card& other) {
-        return value == other();
+    bool operator==(const Card& other) const {
+        return value == other.get_value();
     }
 
-    bool operator<=(const Card& other) {
-        return (*this < other()) || (*this == other());
+    bool operator<=(const Card& other) const {
+        return (*this < other.get_value()) || (*this == other.get_value());
     }
 
-    bool operator>=(const Card& other) {
-        return !(*this < other());
+    bool operator>=(const Card& other) const {
+        return !(*this < other.get_value());
     }
 
     const string str() const {
-        return itoc.at(value);
+        return itov.at(value) + itos.at(suit);
     }
 
 };
 
-const std::map<uint32_t, std::string> Card::itoc = []() {
+const std::map<uint32_t, std::string> Card::itov= []() {
     std::map<uint32_t, std::string> result;
     uint32_t counter = 0;
     for(char v : "23456789TJQKA") {
-        for (char s : "cdhs") {
-            if (v != '\0' and s != '\0') {
-                result[counter] = string(1, v) + s;
-                ++counter;
-            }
+        if (v != '\0') {
+            result[counter] = v;
+            ++counter;
+        }
+    }
+    return result;
+}();
+
+const std::map<uint32_t, std::string> Card::itos= []() {
+    std::map<uint32_t, std::string> result;
+    uint32_t counter = 0;
+    for (char s : "cdhs") {
+        if (s != '\0') {
+            result[counter] = s;
+            ++counter;
         }
     }
     return result;
@@ -69,7 +87,9 @@ private:
 public:
     Deck() {
         for (uint32_t i = 0; i < 52; ++i) {
-            cards.push_back(Card(i));
+            uint32_t value = i % 13;
+            uint32_t suit = i / 13;
+            cards.push_back(Card(value, suit));
         }
     }
 

@@ -10,10 +10,11 @@ using std::vector;
 class HandEvaluator {
 public:
     tuple<int, string> calc_score(vector<Card> &cards) {
-
+        
         return std::make_tuple(0, "");
     }
-    
+// private:
+
 };
 
 // public:
