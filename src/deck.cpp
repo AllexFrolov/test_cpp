@@ -1,12 +1,7 @@
 #include "Deck.hpp"
 
-#include <random>
-#include <algorithm>
-
-using namespace std;
-
 Deck::Deck() {
-    for (uint32_t i = 0; i < 52; ++i) {
+    for (uint8_t i = 0; i < 52; ++i) {
         cards.push_back(Card(i));
     }
 }

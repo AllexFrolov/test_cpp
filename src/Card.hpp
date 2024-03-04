@@ -1,4 +1,6 @@
-#pragma once
+#ifndef CARD_HPP
+#define CARD_HPP
+
 #include <map>
 #include <string>
 #include <cstdint>
@@ -8,18 +10,18 @@ using std::map;
 
 class Card {
 private:
-    uint32_t value;
-    uint32_t suit;
-    static const uint32_t suits = 4;
-    static const map<uint32_t, string> itov;
-    static const map<uint32_t, string> itos;
+    uint8_t value;
+    uint8_t suit;
+    static const uint8_t suits = 4;
+    static const string strValues;
+    static const string strSuits;
 
 public:
-    Card(uint32_t value, uint32_t suit);
-    Card(uint32_t card_number);
+    Card(uint8_t value, uint8_t suit);
+    Card(uint8_t card_number);
     
-    uint32_t get_value() const;
-    uint32_t get_suit() const;
+    uint8_t getValue() const;
+    uint8_t getSuit() const;
 
     bool operator<(const Card& other) const;
 
@@ -33,3 +35,5 @@ public:
 
     const string str();
 };
+
+#endif

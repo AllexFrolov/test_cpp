@@ -1,71 +1,46 @@
 #include "Card.hpp"
 
-using namespace std;
+const string Card::strValues = "23456789TJQKA"; 
+const string Card::strSuits = "cdhs"; 
 
-
-Card::Card(uint32_t value, uint32_t suit) {
+Card::Card(uint8_t value, uint8_t suit) {
     this->value = value;
     this->suit = suit;
 }
 
-Card::Card(uint32_t card_number) {
+Card::Card(uint8_t card_number) {
     value = card_number / suits;
     suit = card_number % suits;
 }
 
-uint32_t Card::get_value() const {
+uint8_t Card::getValue() const {
     return value;
 }
 
-uint32_t Card::get_suit() const {
+uint8_t Card::getSuit() const {
     return suit;
 }
 
 bool Card::operator<(const Card& other) const {
-    return value < other.get_value();
+    return value < other.getValue();
 }
 
 bool Card::operator>(const Card& other) const {
-    return value > other.get_value();
+    return value > other.getValue();
 }
 
 bool Card::operator==(const Card& other) const {
-    return value == other.get_value();
+    return value == other.getValue();
 }
 
 bool Card::operator<=(const Card& other) const {
-    return (*this < other.get_value()) || (*this == other.get_value());
+    return (*this < other.getValue()) || (*this == other.getValue());
 }
 
 bool Card::operator>=(const Card& other) const {
-    return !(*this < other.get_value());
+    return !(*this < other.getValue());
 }
 
 const string Card::str() {
-    return itov.at(value) + itos.at(suit);
+    return strValues.substr(value, 1) + strSuits.substr(suit, 1);
 }
-
-
-const map<uint32_t, string> Card::itov= []() {
-    map<uint32_t, string> result;
-    uint32_t counter = 0;
-    for(char v : "23456789TJQKA") {
-        if (v != '\0') {
-            result[counter] = v;
-            ++counter;
-        }
-    }
-    return result;
-}();
-
-const map<uint32_t, string> Card::itos= []() {
-    map<uint32_t, string> result;
-    uint32_t counter = 0;
-    for (char s : "cdhs") {
-        if (s != '\0') {
-            result[counter] = s;
-            ++counter;
-        }
-    }
-    return result;
-}();
