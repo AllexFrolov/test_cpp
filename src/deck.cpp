@@ -1,12 +1,13 @@
+#include "Deck.hpp"
+
 #include <random>
 #include <algorithm>
-#include "deck.h"
+
+using namespace std;
 
 Deck::Deck() {
     for (uint32_t i = 0; i < 52; ++i) {
-        uint32_t value = i % 13;
-        uint32_t suit = i / 13;
-        cards.push_back(Card(value, suit));
+        cards.push_back(Card(i));
     }
 }
 

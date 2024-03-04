@@ -1,5 +1,6 @@
+#pragma onec
 #include <vector>
-#include "card.h"
+#include "Card.hpp"
 
 using std::vector;
 
@@ -9,6 +10,6 @@ private:
 
 public:
     Deck();
-    void shuffle(uint_fast32_t seed = 0);
+    void shuffle(uint_fast32_t seed);
     Card get_card();
 };

@@ -15,7 +15,7 @@ private:
     static const map<uint32_t, string> itos;
 
 public:
-    Card(uint32_t card_value, uint32_t card_suit);
+    Card(uint32_t value, uint32_t suit);
     Card(uint32_t card_number);
     
     uint32_t get_value() const;
@@ -31,5 +31,5 @@ public:
 
     bool operator>=(const Card& other) const;
 
-    const string str() const;
+    const string str();
 };

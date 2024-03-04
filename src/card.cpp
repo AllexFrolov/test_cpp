@@ -1,4 +1,6 @@
-#include "card.h"
+#include "Card.hpp"
+
+using namespace std;
 
 
 Card::Card(uint32_t value, uint32_t suit) {
@@ -39,7 +41,7 @@ bool Card::operator>=(const Card& other) const {
     return !(*this < other.get_value());
 }
 
-const string Card::str() const {
+const string Card::str() {
     return itov.at(value) + itos.at(suit);
 }
 
