@@ -6,19 +6,19 @@
 #include <cstdint>
 
 using std::string;
-using std::map;
 
 class Card {
 private:
     uint8_t value;
     uint8_t suit;
-    static const uint8_t suits = 4;
-    static const string strValues;
-    static const string strSuits;
+    static const uint8_t SUITS = 4;
+    static const string STR_VALUES;
+    static const string STR_SUITS;
 
 public:
     Card(uint8_t value, uint8_t suit);
     Card(uint8_t card_number);
+    Card(string card_text);
     
     uint8_t getValue() const;
     uint8_t getSuit() const;
@@ -33,7 +33,7 @@ public:
 
     bool operator>=(const Card& other) const;
 
-    const string str();
+    const string toStr();
 };
 
 #endif
