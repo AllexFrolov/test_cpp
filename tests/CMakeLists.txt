@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.29)
 
-project(test)
+project(tests)
 
 # Standarts
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -16,10 +15,11 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-enable_testing()
-
 add_executable(test_executable  test.cpp)
-target_link_libraries(test_executable  GTest::gtest_main)
+target_include_directories(test_executable PRIVATE ${CMAKE_SOURCE_DIR}/../build)
+target_link_libraries(test_executable  GTest::gtest_main src)
 
 include(GoogleTest)
+
+
 gtest_discover_tests(test_executable)

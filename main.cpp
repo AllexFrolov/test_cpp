@@ -23,7 +23,7 @@ int main() {
 
     HandEvaluator he;
 
-    for (string c: vector<string> {"2c", "3c", "4c", "5c"}) {
+    for (string c: vector<string> {"2c", "3c", "4c", "5c", "Jh", "2d"}) {
         cards.push_back(Card(c));
     }
 

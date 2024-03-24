@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include "Card.hpp"
+#include <iostream>
 
 using std::tuple;
 using std::string;
@@ -12,16 +13,40 @@ using std::vector;
 using std::unordered_map;
 using std::make_tuple;
 using std::sort;
+using std::get;
 
 class HandEvaluator {
 public:
     tuple<int, string> calcScore(const vector<Card> &cards) {
-        auto [is_flush, suit_cards] = findFlush(cards);
-        if (is_flush) {
-            auto [is_street_flush, stree_flush_cards] = findStreetFlush(suit_cards);
-            if (is_street_flush) {
+        vector<Card> suit_cards = findFlush(cards);
+
+        if (suit_cards.size() >= 5) {
+            vector<Card> stree_flush_cards = findStreetFlush(suit_cards);
+            if (stree_flush_cards.size() >= 5) {
+                // Card score = stree_flush_cards.at(stree_flush_cards.size());
                 return make_tuple(100, "street flush");
             }
+        }
+
+        unordered_map<uint8_t, vector<Card>> value_coutns = valueCount(cards);
+        vector<tuple<std::size_t, uint8_t>> card_counts;
+
+        for (auto kv: value_coutns) {
+            card_counts.push_back({kv.second.size(), kv.first});
+        }
+        
+        std::sort( card_counts.begin(), card_counts.end(),
+            []( auto &l, auto &r) {
+                if ( get<0>(l) == get<0>(r))
+                {
+                    return get<1>(l) > get<1>(r);
+                }
+                return get<0>(l) > get<0>(r);
+            }
+        );
+
+        for (auto t: card_counts) {
+            std::cout << get<0>(t) << " " << (int)get<1>(t) << std::endl; 
         }
 
         return make_tuple(0, "");
@@ -29,7 +54,7 @@ public:
 
 
 private:
-    tuple<bool, vector<Card>> findFlush(const vector<Card> &cards) {
+    vector<Card> findFlush(const vector<Card> &cards) {
         unordered_map<uint8_t, vector<Card>> counts;
         counts.reserve(4);
 
@@ -42,11 +67,15 @@ private:
                 max_count_idx = card.getSuit();
             }
         }
-        return make_tuple(max_count >= 5, counts[max_count_idx]);
+        return counts[max_count_idx];
     }
 
 
-    tuple<bool, vector<Card>> findStreetFlush(const vector<Card> &cards) {
+    // vector<Card> findKare(unordered_map<uint8_t, vector<Card>> &counter) {
+        
+    // }
+
+    vector<Card> findStreetFlush(const vector<Card> &cards) {
         unordered_map<uint8_t, vector<Card>> value_counts = valueCount(cards);
         return findStreet(value_counts);
     }
@@ -63,7 +92,7 @@ private:
     }
 
 
-    tuple<bool, vector<Card>> findStreet(unordered_map<uint8_t, vector<Card>> &counter) {
+    vector<Card> findStreet(unordered_map<uint8_t, vector<Card>> &counter) {
         vector<uint8_t> sorted_values;
 
         for (auto kv: counter) {
@@ -90,16 +119,16 @@ private:
                 end_idx = current_idx;
             }
         }
-        vector<Card> strit_flush_cards;
-        strit_flush_cards.reserve(5);
+        vector<Card> strit_cards;
+        strit_cards.reserve(5);
         if (end_idx != 0) {
             for (uint8_t i = 0; i < 5 ; ++i) {
-                strit_flush_cards.push_back(counter.at(sorted_values.at(end_idx)).at(0));
+                strit_cards.push_back(counter.at(sorted_values.at(end_idx)).at(0));
                 --end_idx;
             }
         }
 
-        return make_tuple(end_idx != 0, strit_flush_cards);
+        return strit_cards;
     }
 
 };
